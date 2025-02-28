@@ -5,6 +5,7 @@ import com.galangel.trainingservice.workoutgenerator.dto.ExerciseDTO;
 import com.galangel.trainingservice.workoutgenerator.dto.WorkoutRequestDTO;
 import com.galangel.trainingservice.workoutgenerator.model.DayPlanEntity;
 import com.galangel.trainingservice.workoutgenerator.model.ExerciseEntity;
+import com.galangel.trainingservice.workoutgenerator.model.WorkoutPlanEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,13 +21,20 @@ public class WorkoutPlanServiceImpl implements WorkoutPlanService{
     }
 
     @Override
-    public DayPlanEntity generateWorkoutPlan(WorkoutRequestDTO request) {
+    public WorkoutPlanEntity generateWorkoutPlan(WorkoutRequestDTO request) {
+        System.out.println("Received request: " + request);
         List<ExerciseDTO> exerciseDTOs = firebaseService.getExercises();
-
-        List<ExerciseEntity> exerciseEntities = exerciseDTOs.stream()
-                .map(dto -> converter.convertToEntity(dto, 3, 12, 60))
-                .toList();
-
-        return new DayPlanEntity(exerciseEntities);
+        WorkoutPlanEntity workoutPlanEntity = new WorkoutPlanEntity();
+        for (int i = 0; i < 7; i++) {
+            if(i%2==1){
+                List<ExerciseEntity> exerciseEntities = exerciseDTOs.stream()
+                        .map(dto -> converter.convertToEntity(dto, 3, 12, 60))
+                        .toList();
+                workoutPlanEntity.addDayPlan(new DayPlanEntity(exerciseEntities));
+            }else{
+                workoutPlanEntity.addDayPlan(null);
+            }
+        }
+        return workoutPlanEntity;
     }
 }

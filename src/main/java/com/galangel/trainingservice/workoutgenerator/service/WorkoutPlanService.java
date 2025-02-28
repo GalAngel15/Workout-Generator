@@ -1,8 +1,8 @@
 package com.galangel.trainingservice.workoutgenerator.service;
 
 import com.galangel.trainingservice.workoutgenerator.dto.WorkoutRequestDTO;
-import com.galangel.trainingservice.workoutgenerator.model.DayPlanEntity;
+import com.galangel.trainingservice.workoutgenerator.model.WorkoutPlanEntity;
 
 public interface WorkoutPlanService {
-    DayPlanEntity generateWorkoutPlan(WorkoutRequestDTO request);
+    WorkoutPlanEntity generateWorkoutPlan(WorkoutRequestDTO request);
 }
