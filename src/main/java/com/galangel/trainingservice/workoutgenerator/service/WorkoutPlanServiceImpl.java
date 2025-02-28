@@ -1,28 +1,32 @@
 package com.galangel.trainingservice.workoutgenerator.service;
 
+import com.galangel.trainingservice.workoutgenerator.components.Converter;
+import com.galangel.trainingservice.workoutgenerator.dto.ExerciseDTO;
 import com.galangel.trainingservice.workoutgenerator.dto.WorkoutRequestDTO;
 import com.galangel.trainingservice.workoutgenerator.model.DayPlanEntity;
-import com.galangel.trainingservice.workoutgenerator.repository.WorkoutPlanRepository;
+import com.galangel.trainingservice.workoutgenerator.model.ExerciseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class WorkoutPlanServiceImpl implements WorkoutPlanService{
-    private final WorkoutPlanRepository workoutPlanRepository;
+    private final FirebaseService firebaseService;
+    private final Converter converter;
 
-    public WorkoutPlanServiceImpl(WorkoutPlanRepository workoutPlanRepository) {
-        this.workoutPlanRepository = workoutPlanRepository;
+    public WorkoutPlanServiceImpl(FirebaseService firebaseService, Converter converter) {
+        this.firebaseService = firebaseService;
+        this.converter = converter;
     }
 
     @Override
     public DayPlanEntity generateWorkoutPlan(WorkoutRequestDTO request) {
-        // לוגיקה בסיסית ליצירת תוכנית אימונים
-        DayPlanEntity workoutPlan = new DayPlanEntity();
-        workoutPlan.setUserId(request.getUserId());
-        workoutPlan.setWorkoutDays(4); // ברירת מחדל - 4 ימים בשבוע
+        List<ExerciseDTO> exerciseDTOs = firebaseService.getExercises();
 
-        // שמירה ב-Firebase
-        workoutPlanRepository.saveWorkoutPlan(workoutPlan);
+        List<ExerciseEntity> exerciseEntities = exerciseDTOs.stream()
+                .map(dto -> converter.convertToEntity(dto, 3, 12, 60))
+                .toList();
 
-        return workoutPlan;
+        return new DayPlanEntity(exerciseEntities);
     }
 }

@@ -1,23 +1,20 @@
 package com.galangel.trainingservice.workoutgenerator.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Getter @Setter
+@AllArgsConstructor
 public class ExerciseEntity {
-    String name;
-    private String muscleGroup;
-    int sets;
-    int reps;
-    int rest;
+    private String name;
+    private String mainMuscle;
+    private String imageUrl;
+    private int sets;
+    private int reps;
+    private int rest;
 
-    public ExerciseEntity(String name, int sets, int reps, int rest) {
-        this.name = name;
-        this.sets = sets;
-        this.reps = reps;
-        this.rest = rest;
-    }
+
 
     public String toString() {
         return name + " " + sets + "x" + reps + " " + rest + "s";
