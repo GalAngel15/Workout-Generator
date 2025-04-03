@@ -7,19 +7,25 @@ import lombok.Setter;
 @Setter
 public class WorkoutRequestDTO {
     private int age;
-    private int yearsExperience;
+    private double yearsOfExperience;
+    private int daysPerWeek;
     private Goal goal;
 
     public WorkoutRequestDTO() {
     }
-
-    public WorkoutRequestDTO(int age, int yearsExperience, Goal goal) {
+    public WorkoutRequestDTO(int age, double yearsOfExperience, int daysPerWeek, Goal goal) {
         this.age = age;
-        this.yearsExperience = yearsExperience;
+        this.yearsOfExperience = yearsOfExperience;
+        this.daysPerWeek = daysPerWeek;
         this.goal = goal;
     }
 
     public String toString() {
-        return "Age: " + age + " Experience: " + yearsExperience + " Goal: " + goal;
+        return "WorkoutRequestDTO{" +
+                "age=" + age +
+                ", yearsOfExperience=" + yearsOfExperience +
+                ", daysPerWeek=" + daysPerWeek +
+                ", goal=" + goal +
+                '}';
     }
 }
