@@ -9,13 +9,15 @@ import java.util.List;
 @Setter
 @Getter
 public class DayPlanEntity {
-    List<ExerciseEntity> exercises;
+    private int dayNumber;
+    private List<ExerciseEntity> exercises;
 
-    public DayPlanEntity() {
-        exercises=new ArrayList<>();
+    public DayPlanEntity(int dayNumber) {
+        this.dayNumber = dayNumber;
     }
 
-    public DayPlanEntity(List<ExerciseEntity> exercises) {
+    public DayPlanEntity(int dayNumber, List<ExerciseEntity> exercises) {
+        this.dayNumber = dayNumber;
         this.exercises = exercises;
     }
 
