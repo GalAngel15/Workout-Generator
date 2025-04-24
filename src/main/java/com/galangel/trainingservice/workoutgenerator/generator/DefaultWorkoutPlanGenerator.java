@@ -10,6 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Default implementation of the WorkoutPlanGenerator.
+ * <p>
+ * Builds a full 7-day workout plan using a weekly muscle group template,
+ * randomly selected exercises, and fixed training parameters (sets, reps, rest).
+ * <p>
+ * The plan varies based on user experience level and preferred training days per week.
+ */
 @Component
 public class DefaultWorkoutPlanGenerator implements WorkoutPlanGenerator {
 
@@ -17,19 +25,27 @@ public class DefaultWorkoutPlanGenerator implements WorkoutPlanGenerator {
     private final ExerciseSelectionStrategy exerciseSelectionStrategy;
     private final Converter converter;
     private final ExercisePicker exercisePicker;
-
+    private final RepSchemeSelector repSchemeSelector;
 
     public DefaultWorkoutPlanGenerator(
             WorkoutTemplateGenerator templateGenerator,
             ExerciseSelectionStrategy exerciseSelectionStrategy,
-            Converter converter, ExercisePicker exercisePicker
+            Converter converter, ExercisePicker exercisePicker, RepSchemeSelector repSchemeSelector
     ) {
         this.templateGenerator = templateGenerator;
         this.exerciseSelectionStrategy = exerciseSelectionStrategy;
         this.converter = converter;
         this.exercisePicker = exercisePicker;
+        this.repSchemeSelector = repSchemeSelector;
     }
 
+    /**
+     * Generates a personalized weekly workout plan for a user.
+     *
+     * @param request   User preferences including goal, experience level, and training frequency.
+     * @param exercises List of all available exercises to choose from.
+     * @return A structured 7-day workout plan tailored to the user's profile.
+     */
     @Override
     public WorkoutPlanEntity generate(WorkoutRequestDTO request, List<ExerciseDTO> exercises) {
         // Determine training level based on user's experience
@@ -62,11 +78,12 @@ public class DefaultWorkoutPlanGenerator implements WorkoutPlanGenerator {
                 // Pick random exercises for this muscle group
                 List<ExerciseDTO> selected = exercisePicker.pickExercises(exercises, group, count);
 
+                RepScheme scheme = repSchemeSelector.getSchemeFor(request.getGoal());
+
                 // Convert selected exercises to entities with default values
                 selected.stream()
-                        .map(dto -> converter.convertToEntity(dto, 3, 12, 60))
+                        .map(dto -> converter.convertToEntity(dto, scheme.sets(), scheme.reps(), scheme.rest()))
                         .forEach(dayExercises::add);
-
             }
 
             // Add the final day plan to the workout, with its number and exercises
@@ -77,6 +94,12 @@ public class DefaultWorkoutPlanGenerator implements WorkoutPlanGenerator {
         return workoutPlan;
     }
 
+    /**
+     * Maps user's training experience (in years) to a predefined TemplateType.
+     *
+     * @param years Number of years the user has been training.
+     * @return The corresponding TemplateType (BEGINNER, INTERMEDIATE, ADVANCED).
+     */
     private TemplateType resolveLevel(double years) {
         if (years < 1) return TemplateType.BEGINNER;
         if (years < 3) return TemplateType.INTERMEDIATE;
