@@ -61,7 +61,7 @@ public class DefaultWorkoutPlanGenerator implements WorkoutPlanGenerator {
         WorkoutPlanEntity workoutPlan = new WorkoutPlanEntity();
         workoutPlan.setGoal(request.getGoal());
 
-        for (int day = 0; day < daysPerWeek; day++) {
+        for (int day = 0; day < 7; day++) {
             List<MuscleGroup> groups = template.getOrDefault(day, List.of());
             DayPlanEntity dayPlan = buildDayPlan(day, groups, exercises, level, request);
             workoutPlan.addDayPlan(dayPlan);
