@@ -61,37 +61,27 @@ public class DefaultWorkoutPlanGenerator implements WorkoutPlanGenerator {
         WorkoutPlanEntity workoutPlan = new WorkoutPlanEntity();
         workoutPlan.setGoal(request.getGoal());
 
-        // Loop over 7 days to fill each training day
-        for (int day = 0; day < 7; day++) {
-            // If there's no plan for this day, add empty day with its number
-            if (!template.containsKey(day)) {
-                workoutPlan.addDayPlan(new DayPlanEntity(day));
-                continue;
-            }
-
-            // Prepare exercises for this specific day
-            List<ExerciseEntity> dayExercises = new ArrayList<>();
-            for (MuscleGroup group : template.get(day)) {
-                // Loop over each muscle group planned for this day
-                int count = exerciseSelectionStrategy.getRecommendedCount(level, group);
-
-                // Pick random exercises for this muscle group
-                List<ExerciseDTO> selected = exercisePicker.pickExercises(exercises, group, count);
-
-                RepScheme scheme = repSchemeSelector.getSchemeFor(request.getGoal());
-
-                // Convert selected exercises to entities with default values
-                selected.stream()
-                        .map(dto -> converter.convertToEntity(dto, scheme.sets(), scheme.reps(), scheme.rest()))
-                        .forEach(dayExercises::add);
-            }
-
-            // Add the final day plan to the workout, with its number and exercises
-            workoutPlan.addDayPlan(new DayPlanEntity(day, dayExercises));
+        for (int day = 0; day < daysPerWeek; day++) {
+            List<MuscleGroup> groups = template.getOrDefault(day, List.of());
+            DayPlanEntity dayPlan = buildDayPlan(day, groups, exercises, level, request);
+            workoutPlan.addDayPlan(dayPlan);
         }
 
         // Return the complete weekly workout plan
         return workoutPlan;
+    }
+
+    private DayPlanEntity buildDayPlan(int day, List<MuscleGroup> muscleGroups, List<ExerciseDTO> exercises, TemplateType level, WorkoutRequestDTO request) {
+        List<ExerciseEntity> dayExercises = new ArrayList<>();
+        for (MuscleGroup group : muscleGroups) {
+            int count = exerciseSelectionStrategy.getRecommendedCount(level, group);
+            List<ExerciseDTO> selected = exercisePicker.pickExercises(exercises, group, count);
+            RepScheme scheme = repSchemeSelector.getSchemeFor(request.getGoal(), group);
+            selected.stream()
+                    .map(dto -> converter.convertToEntity(dto, scheme.sets(), scheme.reps(), scheme.rest()))
+                    .forEach(dayExercises::add);
+        }
+        return new DayPlanEntity(day, dayExercises);
     }
 
     /**

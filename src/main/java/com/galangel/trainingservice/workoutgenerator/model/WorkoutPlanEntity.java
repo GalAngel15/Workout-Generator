@@ -13,15 +13,16 @@ public class WorkoutPlanEntity {
     private List<DayPlanEntity> days;
 
     public WorkoutPlanEntity() {
-        days=new ArrayList<>(7);
+        days=new ArrayList<>();
     }
 
     public WorkoutPlanEntity(Goal goal, List<DayPlanEntity> days) {
         this.goal = goal;
-        this.days = days;
+        this.days = days != null ? days : new ArrayList<>();
     }
 
     public void addDayPlan(DayPlanEntity dayPlan) {
+        if (days == null) days = new ArrayList<>();
         days.add(dayPlan);
     }
 
@@ -30,9 +31,11 @@ public class WorkoutPlanEntity {
         StringBuilder sb = new StringBuilder();
         sb.append("Goal: ").append(goal).append("\n");
 
-        for (DayPlanEntity dayPlan : days) {
-            sb.append(dayPlan.toString());
-            sb.append("\n");
+        if (days != null) {
+            for (DayPlanEntity dayPlan : days) {
+                sb.append(dayPlan.toString());
+                sb.append("\n");
+            }
         }
         return sb.toString();
     }

@@ -6,6 +6,7 @@ import com.galangel.trainingservice.workoutgenerator.model.WorkoutPlanEntity;
 import com.galangel.trainingservice.workoutgenerator.service.WorkoutPlanService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,7 @@ public class WorkoutPlanController {
 
     @PostMapping("/generate")
     @Operation(summary = "יוצר תוכנית אימונים", description = "מחזיר תוכנית אימונים בהתאם לפרטי המתאמן")
-    public WorkoutPlanEntity generateWorkoutPlan(@RequestBody WorkoutRequestDTO request){
+    public WorkoutPlanEntity generateWorkoutPlan(@Valid @RequestBody WorkoutRequestDTO request){
         return workoutPlanService.generateWorkoutPlan(request);
     }
 
