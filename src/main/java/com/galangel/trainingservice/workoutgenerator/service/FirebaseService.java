@@ -16,6 +16,7 @@ import java.util.concurrent.CountDownLatch;
 @Service
 public class FirebaseService {
     private DatabaseReference database;
+    private List<ExerciseDTO> cachedExercises; // Cache for exercises
 
     @PostConstruct
     public void init() {
@@ -39,6 +40,10 @@ public class FirebaseService {
     }
 
     public List<ExerciseDTO> getExercises() {
+        if (cachedExercises != null && !cachedExercises.isEmpty()) {
+            return cachedExercises; // Return cached exercises if available
+        }
+
         List<ExerciseDTO> exercises = new ArrayList<>();
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -65,7 +70,14 @@ public class FirebaseService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        cachedExercises = exercises; // Save exercises to cache
         return exercises;
+    }
+
+    // Method to refresh the cached exercises
+    public void refreshExercisesCache() {
+        cachedExercises = null;
     }
 }
 
