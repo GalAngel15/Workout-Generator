@@ -12,7 +12,7 @@ import java.util.Map;
 @Component
 public class WorkoutTemplateGenerator {
 
-    public Map<Integer, List<MuscleGroup>> getTemplate(TemplateType type, int daysPerWeek) {
+    public Map<Integer, List<MuscleGroup>> getTemplate(ExerciserLevel type, int daysPerWeek) {
         return switch (type) {
             case BEGINNER -> getBeginnerTemplate(daysPerWeek);
             case INTERMEDIATE -> getIntermediateTemplate(daysPerWeek);

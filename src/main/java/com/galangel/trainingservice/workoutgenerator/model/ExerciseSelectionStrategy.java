@@ -11,15 +11,15 @@ import java.util.Map;
 @Component
 public class ExerciseSelectionStrategy {
 
-    private final Map<TemplateType, Map<MuscleGroup, Integer>> config = new HashMap<>();
+    private final Map<ExerciserLevel, Map<MuscleGroup, Integer>> config = new HashMap<>();
 
     public ExerciseSelectionStrategy() {
-        config.put(TemplateType.BEGINNER, beginnerConfig());
-        config.put(TemplateType.INTERMEDIATE, intermediateConfig());
-        config.put(TemplateType.ADVANCED, advancedConfig());
+        config.put(ExerciserLevel.BEGINNER, beginnerConfig());
+        config.put(ExerciserLevel.INTERMEDIATE, intermediateConfig());
+        config.put(ExerciserLevel.ADVANCED, advancedConfig());
     }
 
-    public int getRecommendedCount(TemplateType level, MuscleGroup group) {
+    public int getRecommendedCount(ExerciserLevel level, MuscleGroup group) {
         return config.getOrDefault(level, beginnerConfig())
                 .getOrDefault(group, 1);
     }

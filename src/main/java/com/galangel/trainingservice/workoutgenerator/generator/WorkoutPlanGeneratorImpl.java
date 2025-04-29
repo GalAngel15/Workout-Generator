@@ -19,7 +19,7 @@ import java.util.Map;
  * The plan varies based on user experience level and preferred training days per week.
  */
 @Component
-public class DefaultWorkoutPlanGenerator implements WorkoutPlanGenerator {
+public class WorkoutPlanGeneratorImpl implements WorkoutPlanGenerator {
 
     private final WorkoutTemplateGenerator templateGenerator;
     private final ExerciseSelectionStrategy exerciseSelectionStrategy;
@@ -27,7 +27,7 @@ public class DefaultWorkoutPlanGenerator implements WorkoutPlanGenerator {
     private final ExercisePicker exercisePicker;
     private final RepSchemeSelector repSchemeSelector;
 
-    public DefaultWorkoutPlanGenerator(
+    public WorkoutPlanGeneratorImpl(
             WorkoutTemplateGenerator templateGenerator,
             ExerciseSelectionStrategy exerciseSelectionStrategy,
             Converter converter, ExercisePicker exercisePicker, RepSchemeSelector repSchemeSelector
@@ -49,7 +49,7 @@ public class DefaultWorkoutPlanGenerator implements WorkoutPlanGenerator {
     @Override
     public WorkoutPlanEntity generate(WorkoutRequestDTO request, List<ExerciseDTO> exercises) {
         // Determine training level based on user's experience
-        TemplateType level = resolveLevel(request.getYearsOfExperience());
+        ExerciserLevel level = resolveLevel(request.getYearsOfExperience());
 
         // Get how many days per week the user wants to train
         int daysPerWeek = request.getDaysPerWeek();
@@ -71,12 +71,12 @@ public class DefaultWorkoutPlanGenerator implements WorkoutPlanGenerator {
         return workoutPlan;
     }
 
-    private DayPlanEntity buildDayPlan(int day, List<MuscleGroup> muscleGroups, List<ExerciseDTO> exercises, TemplateType level, WorkoutRequestDTO request) {
+    private DayPlanEntity buildDayPlan(int day, List<MuscleGroup> muscleGroups, List<ExerciseDTO> exercises, ExerciserLevel level, WorkoutRequestDTO request) {
         List<ExerciseEntity> dayExercises = new ArrayList<>();
-        for (MuscleGroup group : muscleGroups) {
-            int count = exerciseSelectionStrategy.getRecommendedCount(level, group);
-            List<ExerciseDTO> selected = exercisePicker.pickExercises(exercises, group, count);
-            RepScheme scheme = repSchemeSelector.getSchemeFor(request.getGoal(), group);
+        for (MuscleGroup group : muscleGroups) { //Iterate through each muscle group for the day
+            int count = exerciseSelectionStrategy.getRecommendedCount(level, group); // Get the number of exercises to assign
+            List<ExerciseDTO> selected = exercisePicker.pickExercises(exercises, group, count); // Select exercises based on the group
+            RepScheme scheme = repSchemeSelector.getSchemeFor(request.getGoal(), group); // Get the rep scheme for the selected exercises
             selected.stream()
                     .map(dto -> converter.convertToEntity(dto, scheme.sets(), scheme.reps(), scheme.rest()))
                     .forEach(dayExercises::add);
@@ -90,9 +90,9 @@ public class DefaultWorkoutPlanGenerator implements WorkoutPlanGenerator {
      * @param years Number of years the user has been training.
      * @return The corresponding TemplateType (BEGINNER, INTERMEDIATE, ADVANCED).
      */
-    private TemplateType resolveLevel(double years) {
-        if (years < 1) return TemplateType.BEGINNER;
-        if (years < 3) return TemplateType.INTERMEDIATE;
-        return TemplateType.ADVANCED;
+    private ExerciserLevel resolveLevel(double years) {
+        if (years < 1) return ExerciserLevel.BEGINNER;
+        if (years < 3) return ExerciserLevel.INTERMEDIATE;
+        return ExerciserLevel.ADVANCED;
     }
 }

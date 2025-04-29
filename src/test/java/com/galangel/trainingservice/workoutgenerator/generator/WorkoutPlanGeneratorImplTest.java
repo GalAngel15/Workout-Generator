@@ -14,9 +14,9 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class DefaultWorkoutPlanGeneratorTest {
+class WorkoutPlanGeneratorImplTest {
 
-    private DefaultWorkoutPlanGenerator generator;
+    private WorkoutPlanGeneratorImpl generator;
     private WorkoutTemplateGenerator templateGenerator;
     private ExerciseSelectionStrategy exerciseSelectionStrategy;
     private Converter converter;
@@ -31,7 +31,7 @@ class DefaultWorkoutPlanGeneratorTest {
         exercisePicker = mock(ExercisePicker.class);
         repSchemeSelector = mock(RepSchemeSelector.class);
 
-        generator = new DefaultWorkoutPlanGenerator(templateGenerator, exerciseSelectionStrategy, converter, exercisePicker, repSchemeSelector);
+        generator = new WorkoutPlanGeneratorImpl(templateGenerator, exerciseSelectionStrategy, converter, exercisePicker, repSchemeSelector);
     }
 
     @Test

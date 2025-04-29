@@ -1,6 +1,6 @@
 package com.galangel.trainingservice.workoutgenerator.model;
 
-public enum TemplateType {
+public enum ExerciserLevel {
     BEGINNER,
     INTERMEDIATE,
     ADVANCED
