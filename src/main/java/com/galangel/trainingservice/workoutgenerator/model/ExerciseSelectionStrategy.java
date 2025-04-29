@@ -1,12 +1,13 @@
 package com.galangel.trainingservice.workoutgenerator.model;
 
-import com.galangel.trainingservice.workoutgenerator.model.MuscleGroup;
-import com.galangel.trainingservice.workoutgenerator.model.TemplateType;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Determines how many exercises to assign per muscle group based on user level (template type).
+ */
 @Component
 public class ExerciseSelectionStrategy {
 

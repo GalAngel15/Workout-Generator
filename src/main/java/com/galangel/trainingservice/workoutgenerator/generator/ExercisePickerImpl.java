@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+/**
+ * Selects suitable exercises for a given muscle group, avoiding duplicates within the workout plan.
+ */
 @Component
 public class ExercisePickerImpl implements ExercisePicker {
 

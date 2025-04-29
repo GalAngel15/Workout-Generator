@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Provides predefined workout splits (templates) for each experience level and weekly frequency.
+ */
 @Component
 public class WorkoutTemplateGenerator {
 

@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * Connects to Firebase Realtime Database to fetch and cache available exercises.
+ */
 @Service
 public class FirebaseService {
     private DatabaseReference database;

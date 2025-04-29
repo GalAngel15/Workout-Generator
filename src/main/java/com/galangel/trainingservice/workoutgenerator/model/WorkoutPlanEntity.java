@@ -7,6 +7,9 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a full weekly workout plan, including goal and per-day training breakdown.
+ */
 @Getter @Setter
 public class WorkoutPlanEntity {
     private Goal goal;

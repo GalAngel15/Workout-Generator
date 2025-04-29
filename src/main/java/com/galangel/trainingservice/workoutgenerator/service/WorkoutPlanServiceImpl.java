@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Generating personalized workout plans.
+ */
 @Service
 public class WorkoutPlanServiceImpl implements WorkoutPlanService {
     private final FirebaseService firebaseService;
