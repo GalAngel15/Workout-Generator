@@ -1,4 +1,4 @@
-package com.galangel.trainingservice.workoutgenerator.dto;
+package com.galangel.trainingservice.workoutgenerator.enums;
 
 public enum Goal {
     LOSE_WEIGHT,

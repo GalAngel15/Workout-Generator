@@ -1,7 +1,7 @@
 package com.galangel.trainingservice.workoutgenerator.generator;
 
 import com.galangel.trainingservice.workoutgenerator.dto.ExerciseDTO;
-import com.galangel.trainingservice.workoutgenerator.model.MuscleGroup;
+import com.galangel.trainingservice.workoutgenerator.enums.MuscleGroup;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -12,10 +12,8 @@ import java.util.*;
 @Component
 public class ExercisePickerImpl implements ExercisePicker {
 
-    private final Set<String> pickedExercises = new HashSet<>();
-
     @Override
-    public List<ExerciseDTO> pickExercises(List<ExerciseDTO> allExercises, MuscleGroup targetGroup, int count) {
+    public List<ExerciseDTO> pickExercises(List<ExerciseDTO> allExercises, MuscleGroup targetGroup, int count, Set<String> pickedExercises) {
         // Filter exercises by muscle group
         List<ExerciseDTO> matching = new ArrayList<>(
                 allExercises.stream()

@@ -1,5 +1,7 @@
 package com.galangel.trainingservice.workoutgenerator.model;
 
+import com.galangel.trainingservice.workoutgenerator.enums.ExerciserLevel;
+import com.galangel.trainingservice.workoutgenerator.enums.MuscleGroup;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

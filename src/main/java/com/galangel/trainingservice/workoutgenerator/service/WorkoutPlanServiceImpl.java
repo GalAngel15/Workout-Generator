@@ -24,7 +24,10 @@ public class WorkoutPlanServiceImpl implements WorkoutPlanService {
 
     @Override
     public WorkoutPlanEntity generateWorkoutPlan(WorkoutRequestDTO request) {
+        System.out.println("generateWorkoutPlan WorkoutPlanService before Firebase ");
         List<ExerciseDTO> exerciseDTOs = firebaseService.getExercises();
+
+        System.out.println("generateWorkoutPlan WorkoutPlanService after Firebase ");
         return planGenerator.generate(request, exerciseDTOs);
     }
 }

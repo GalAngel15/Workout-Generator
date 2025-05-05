@@ -1,9 +1,10 @@
 package com.galangel.trainingservice.workoutgenerator.generator;
 
 import com.galangel.trainingservice.workoutgenerator.dto.ExerciseDTO;
-import com.galangel.trainingservice.workoutgenerator.model.MuscleGroup;
+import com.galangel.trainingservice.workoutgenerator.enums.MuscleGroup;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Selects suitable exercises for a given muscle group, avoiding duplicates within the workout plan.
@@ -23,5 +24,5 @@ public interface ExercisePicker {
      * @return a list of selected exercises, filtered and shuffled, with a maximum size of {@code count}.
      */
 
-    List<ExerciseDTO> pickExercises(List<ExerciseDTO> allExercises, MuscleGroup targetGroup, int count);
+    List<ExerciseDTO> pickExercises(List<ExerciseDTO> allExercises, MuscleGroup targetGroup, int count, Set<String> pickedExercises);
 }

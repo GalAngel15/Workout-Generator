@@ -1,7 +1,6 @@
 package com.galangel.trainingservice.workoutgenerator.controller;
 
 import com.galangel.trainingservice.workoutgenerator.dto.WorkoutRequestDTO;
-import com.galangel.trainingservice.workoutgenerator.model.DayPlanEntity;
 import com.galangel.trainingservice.workoutgenerator.model.WorkoutPlanEntity;
 import com.galangel.trainingservice.workoutgenerator.service.WorkoutPlanService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,6 +24,7 @@ public class WorkoutPlanController {
     @PostMapping("/generate")
     @Operation(summary = "יוצר תוכנית אימונים", description = "מחזיר תוכנית אימונים בהתאם לפרטי המתאמן")
     public WorkoutPlanEntity generateWorkoutPlan(@Valid @RequestBody WorkoutRequestDTO request){
+        System.out.println("generateWorkoutPlan Controller \n"+ request.toString());
         return workoutPlanService.generateWorkoutPlan(request);
     }
 

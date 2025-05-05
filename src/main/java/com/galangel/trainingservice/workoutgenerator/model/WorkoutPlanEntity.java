@@ -1,6 +1,6 @@
 package com.galangel.trainingservice.workoutgenerator.model;
 
-import com.galangel.trainingservice.workoutgenerator.dto.Goal;
+import com.galangel.trainingservice.workoutgenerator.enums.Goal;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,11 +17,6 @@ public class WorkoutPlanEntity {
 
     public WorkoutPlanEntity() {
         days=new ArrayList<>();
-    }
-
-    public WorkoutPlanEntity(Goal goal, List<DayPlanEntity> days) {
-        this.goal = goal;
-        this.days = days != null ? days : new ArrayList<>();
     }
 
     public void addDayPlan(DayPlanEntity dayPlan) {

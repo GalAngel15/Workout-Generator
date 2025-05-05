@@ -2,8 +2,10 @@ package com.galangel.trainingservice.workoutgenerator.generator;
 
 import com.galangel.trainingservice.workoutgenerator.components.Converter;
 import com.galangel.trainingservice.workoutgenerator.dto.ExerciseDTO;
-import com.galangel.trainingservice.workoutgenerator.dto.Goal;
+import com.galangel.trainingservice.workoutgenerator.enums.Goal;
 import com.galangel.trainingservice.workoutgenerator.dto.WorkoutRequestDTO;
+import com.galangel.trainingservice.workoutgenerator.enums.MuscleGroup;
+import com.galangel.trainingservice.workoutgenerator.enums.WorkoutSplitType;
 import com.galangel.trainingservice.workoutgenerator.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +39,7 @@ class WorkoutPlanGeneratorImplTest {
     @Test
     void generateWorkoutPlan_success() {
         // Arrange
-        WorkoutRequestDTO request = new WorkoutRequestDTO(25, 2.5, 3, Goal.MUSCLE_GAIN);
+        WorkoutRequestDTO request = new WorkoutRequestDTO(25, 2.5, 3, Goal.MUSCLE_GAIN, WorkoutSplitType.AB);
         ExerciseDTO exerciseDTO = new ExerciseDTO("Push Up", "CHEST", "url");
 
         Map<Integer, List<MuscleGroup>> template = Map.of(
@@ -45,9 +47,10 @@ class WorkoutPlanGeneratorImplTest {
                 2, List.of(MuscleGroup.BACK)
         );
 
-        when(templateGenerator.getTemplate(any(), eq(3))).thenReturn(template);
+        when(templateGenerator.getTemplate(eq(WorkoutSplitType.ABC), eq(3)))
+                .thenReturn(template);
         when(exerciseSelectionStrategy.getRecommendedCount(any(), any())).thenReturn(1);
-        when(exercisePicker.pickExercises(anyList(), any(), anyInt())).thenReturn(List.of(exerciseDTO));
+        when(exercisePicker.pickExercises(anyList(), any(), anyInt(),anySet())).thenReturn(List.of(exerciseDTO));
         when(repSchemeSelector.getSchemeFor(any(), any())).thenReturn(new RepScheme(3, 12, 60));
         when(converter.convertToEntity(any(), anyInt(), anyInt(), anyInt()))
                 .thenReturn(new ExerciseEntity("Push Up", "CHEST", "url", 3, 12, 60));

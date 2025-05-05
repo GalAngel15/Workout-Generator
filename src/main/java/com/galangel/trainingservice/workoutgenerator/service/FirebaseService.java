@@ -44,19 +44,25 @@ public class FirebaseService {
 
     public List<ExerciseDTO> getExercises() {
         if (cachedExercises != null && !cachedExercises.isEmpty()) {
+            System.out.println("FirebaseService in cachedExercises ");
             return cachedExercises; // Return cached exercises if available
         }
 
         List<ExerciseDTO> exercises = new ArrayList<>();
         CountDownLatch latch = new CountDownLatch(1);
 
+        System.out.println("🟡 FirebaseService: starting to listen...");
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                System.out.println("🟢 onDataChange called with " + snapshot.getChildrenCount() + " items");
+
                 for (DataSnapshot data : snapshot.getChildren()) {
                     ExerciseDTO exercise = data.getValue(ExerciseDTO.class);
                     if (exercise != null) {
                         exercises.add(exercise);
+                    }else {
+                        System.out.println("🔴 Failed to parse an exercise!");
                     }
                 }
                 latch.countDown();
@@ -64,6 +70,7 @@ public class FirebaseService {
 
             @Override
             public void onCancelled(DatabaseError error) {
+                System.out.println("❌ Firebase error: " + error.getMessage());
                 latch.countDown();
             }
         });
@@ -75,6 +82,8 @@ public class FirebaseService {
         }
 
         cachedExercises = exercises; // Save exercises to cache
+        System.out.println("FirebaseService finished");
+
         return exercises;
     }
 

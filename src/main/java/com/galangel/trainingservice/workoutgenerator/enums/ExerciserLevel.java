@@ -1,4 +1,4 @@
-package com.galangel.trainingservice.workoutgenerator.model;
+package com.galangel.trainingservice.workoutgenerator.enums;
 
 public enum ExerciserLevel {
     BEGINNER,

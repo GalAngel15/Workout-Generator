@@ -1,7 +1,7 @@
 package com.galangel.trainingservice.workoutgenerator.generator;
 
-import com.galangel.trainingservice.workoutgenerator.dto.Goal;
-import com.galangel.trainingservice.workoutgenerator.model.MuscleGroup;
+import com.galangel.trainingservice.workoutgenerator.enums.Goal;
+import com.galangel.trainingservice.workoutgenerator.enums.MuscleGroup;
 import org.springframework.stereotype.Component;
 
 /**
